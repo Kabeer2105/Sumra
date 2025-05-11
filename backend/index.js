@@ -57,6 +57,8 @@ const cors = require('cors');
 const app = express();
 const PORT = 3000;
 
+const mongoURI = process.env.MONGODB_URI;
+
 // Replace this with your actual MongoDB Atlas connection string
 mongoose.connect(mongoURI, { dbName: 'citydata' })
   .then(() => console.log('MongoDB connected'))
