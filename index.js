@@ -112,7 +112,4 @@ app.put('/people/:id', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
-<<<<<<< HEAD
 
-=======
->>>>>>> 02008334725225d3db81d1280a8037ad3cf70c06
