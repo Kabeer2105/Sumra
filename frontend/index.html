@@ -177,14 +177,16 @@
         row.setAttribute('data-id', person._id);  // **Set data-id attribute to row for identification**
         row.innerHTML = `
           <td>${index + 1}</td>
-          <td><input value="${person.name || ''}" disabled></td>
+          <td><textarea disabled>${person.name || ''}</textarea></td>
           <td><input value="${person.birthdate || ''}" disabled></td>
           <td><input value="${person.contact || ''}" disabled></td>
           <td><input value="${person.bloodGroup || ''}" disabled></td>
           <td>
-            <!-- **Edit Button** -->
-            <button onclick="editRow(this)">Edit</button>
-            <button onclick="deletePerson('${person._id}')">Delete</button>
+            <div class = 'actions'>
+              <!-- **Edit Button** -->
+              <button onclick="editRow(this)">Edit</button>
+              <button onclick="deletePerson('${person._id}')">Delete</button>
+            </div>  
           </td>
         `;
       });
@@ -195,20 +197,22 @@
       const row = tbody.insertRow();
       row.innerHTML = `
         <td>New</td>
-        <td><input></td>
+        <td><textarea></textarea></td>
         <td><input type="date"></td>
         <td><input></td>
         <td><input></td>
         <td>
-          <button onclick="saveRow(this)">Save</button>
-          <button onclick="this.closest('tr').remove()">Cancel</button>
+          <div class = 'actions'>
+            <button onclick="saveRow(this)">Save</button>
+            <button onclick="this.closest('tr').remove()">Cancel</button>
+          </div>  
         </td>
       `;
     }
 
     async function saveRow(btn) {
       const row = btn.closest('tr');
-      const inputs = row.querySelectorAll('input');
+      const inputs = row.querySelectorAll('input', 'textarea');
       const city = document.getElementById('citySelect').value;
 
       const person = {
@@ -249,7 +253,7 @@
     // **saveEditedRow Function**
     async function saveEditedRow(btn) {
       const row = btn.closest('tr');
-      const inputs = row.querySelectorAll('input');
+      const inputs = row.querySelectorAll('input','textarea');
       const city = document.getElementById('citySelect').value;
       const id = row.getAttribute('data-id');
 

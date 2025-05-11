@@ -70,10 +70,15 @@ th, td {
   padding: 12px;
   text-align: center;
   vertical-align: middle;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal; /* allow wrapping */
+  overflow-wrap: break-word; /* break long words if necessary */
+  word-wrap: break-word; /* older syntax support */
 }
+
+th, td {
+  max-width: 180px;
+}
+
 
 thead th {
   background-color: #e9ecef;
@@ -137,4 +142,26 @@ html {
   -webkit-text-size-adjust: none;
   touch-action: manipulation;
 }
+
+td textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  resize: vertical;
+  min-height: 38px; /* Adjust height as needed */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+
+.actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 
