@@ -48,7 +48,7 @@ app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });*/
 
-
+require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -58,9 +58,8 @@ const app = express();
 const PORT = 3000;
 
 // Replace this with your actual MongoDB Atlas connection string
-mongoose.connect('mongodb+srv://kabeerd:Ashifa2505@cluster0.yke9w5x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
-  dbName: 'citydata'
-}).then(() => console.log('MongoDB connected'))
+mongoose.connect(mongoURI, { dbName: 'citydata' })
+  .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('Mongo error:', err));
 
 app.use(cors());
