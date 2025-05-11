@@ -1,0 +1,237 @@
+/* General Reset */
+body, h2, table, th, td, input, button {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Page Styling */
+body {
+  background-color: #f4f7fa;
+  color: #333;
+  font-size: 16px;
+  padding: 20px;
+}
+
+h2 {
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+label {
+  font-size: 1rem;
+  margin-right: 10px;
+}
+
+select, input {
+  font-size: 1rem;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 200px;
+}
+
+button {
+  font-size: 1rem;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px 5px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+  word-wrap: break-word;
+  max-width: 200px;
+}
+
+td input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Actions Column */
+td button {
+  background-color: #f44336;
+  margin-right: 5px;
+}
+
+td button:hover {
+  background-color: #d32f2f;
+}
+
+/* Scrollable Table */
+.table-container {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+/* Mobile-Friendly Adjustments */
+@media screen and (max-width: 768px) {
+  label, select, input, button {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+  th, td {
+    max-width: 120px;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+/* Extra Small Screen */
+@media screen and (max-width: 480px) {
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  td input {
+    font-size: 14px;
+  }
+}
+
+/* Fixed height for the table container */
+.table-container {
+  overflow-x: auto;
+  max-height: 400px; /* or any height you prefer */
+}
+
+/* Ensure the table stays at a fixed height even if it's empty */
+table {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+}
+
+tbody {
+  display: block;
+  height: 200px; /* Adjust height if needed */
+  overflow-y: scroll;
+}
+
+thead, tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+
+/* Ensure uniform box-sizing across all elements */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Align header with rows */
+thead th {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+tbody td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;  /* Fix the layout to avoid stretching */
+}
+
+/* Input fields should not extend beyond their cells */
+input[type="text"], input[type="date"] {
+  width: 100%;
+  height: 30px;
+  padding: 5px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+}
+
+/* Styling for action buttons to make them appear consistently */
+button {
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button.save {
+  background-color: #4CAF50;
+  color: white;
+}
+
+button.cancel {
+  background-color: #f44336;
+  color: white;
+}
+
+
+table {
+  width: 100%;
+  table-layout: fixed; /* Force all columns to have equal and predictable width */
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+thead th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+/* Input fields must stay within the cell */
+td input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Ensure buttons don't overflow */
+td button {
+  white-space: nowrap;
+  margin: 0 2px;
+}

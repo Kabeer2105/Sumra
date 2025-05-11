@@ -1,0 +1,277 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sumra Database</title>
+  <style>
+    table, th, td { border: 1px solid black; border-collapse: collapse; padding: 6px; }
+    input { width: 100%; }
+    button { margin: 2px; }
+  </style>
+</head>
+<body>
+  <h2>Sumra Database</h2>
+
+  <label for="citySelect">Select City:</label>
+  <select id="citySelect" onchange="loadTable()">
+    <option value="Dar-es-salaam">Dar-es-salaam</option>
+    <option value="Arusha">Arusha</option>
+    <option value="Handeni">Handeni</option>
+    <option value="Tanga">Tanga</option>
+    <option value="Moshi">Moshi</option>
+    <option value="Others">Others</option>
+  </select>
+
+  <button onclick="addRow()">Add Row</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Birthdate</th>
+        <th>Contact</th>
+        <th>Blood Group</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      
+    </tbody>
+  </table>
+
+  <script>
+    const API = 'http://localhost:3000/people';
+
+    async function loadTable() {
+      const city = document.getElementById('citySelect').value;
+      const res = await fetch(`${API}?city=${city}`);
+      const data = await res.json();
+
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+
+      data.forEach((person, index) => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td><input value="${person.name || ''}" disabled></td>
+          <td><input value="${person.birthdate || ''}" disabled></td>
+          <td><input value="${person.contact || ''}" disabled></td>
+          <td><input value="${person.bloodGroup || ''}" disabled></td>
+          <td>
+            <button onclick="deletePerson('${person._id}')">Delete</button>
+          </td>
+        `;
+      });
+    }
+
+    function addRow() {
+      const tbody = document.getElementById('tableBody');
+      const row = tbody.insertRow();
+      row.innerHTML = `
+        <td>New</td>
+        <td><input></td>
+        <td><input type="date"></td>
+        <td><input></td>
+        <td><input></td>
+        <td>
+          <button onclick="saveRow(this)">Save</button>
+          <button onclick="this.closest('tr').remove()">Cancel</button>
+        </td>
+      `;
+    }
+
+    async function saveRow(btn) {
+      const row = btn.closest('tr');
+      const inputs = row.querySelectorAll('input');
+      const city = document.getElementById('citySelect').value;
+
+      const person = {
+        name: inputs[0].value,
+        birthdate: inputs[1].value,
+        contact: inputs[2].value,
+        bloodGroup: inputs[3].value,
+        city
+      };
+
+      await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(person)
+      });
+
+      loadTable();
+    }
+
+    async function deletePerson(id) {
+      await fetch(`${API}/${id}`, { method: 'DELETE' });
+      loadTable();
+    }
+
+    loadTable();
+  </script>
+</body>
+</html>-->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css"> 
+  <title>Sumra Database</title>
+  <style>
+    table, th, td { border: 1px solid black; border-collapse: collapse; padding: 6px; }
+    input { width: 100%; }
+    button { margin: 2px; }
+  </style>
+</head>
+<body>
+  <h2>Sumra Database</h2>
+
+  <label for="citySelect">Select City:</label>
+  <select id="citySelect" onchange="loadTable()">
+    <option value="Dar-es-salaam">Dar-es-salaam</option>
+    <option value="Arusha">Arusha</option>
+    <option value="Handeni">Handeni</option>
+    <option value="Tanga">Tanga</option>
+    <option value="Moshi">Moshi</option>
+    <option value="Others">Others</option>
+  </select>
+
+  <button onclick="addRow()">Add Row</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Birthdate</th>
+        <th>Contact</th>
+        <th>Blood Group</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <!-- Rows inserted here -->
+    </tbody>
+  </table>
+
+  <script>
+    const API = 'http://localhost:3000/people';
+
+    async function loadTable() {
+      const city = document.getElementById('citySelect').value;
+      const res = await fetch(`${API}?city=${city}`);
+      const data = await res.json();
+
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+
+      data.forEach((person, index) => {
+        const row = tbody.insertRow();
+        row.setAttribute('data-id', person._id);  // **Set data-id attribute to row for identification**
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td><input value="${person.name || ''}" disabled></td>
+          <td><input value="${person.birthdate || ''}" disabled></td>
+          <td><input value="${person.contact || ''}" disabled></td>
+          <td><input value="${person.bloodGroup || ''}" disabled></td>
+          <td>
+            <!-- **Edit Button** -->
+            <button onclick="editRow(this)">Edit</button>
+            <button onclick="deletePerson('${person._id}')">Delete</button>
+          </td>
+        `;
+      });
+    }
+
+    function addRow() {
+      const tbody = document.getElementById('tableBody');
+      const row = tbody.insertRow();
+      row.innerHTML = `
+        <td>New</td>
+        <td><input></td>
+        <td><input type="date"></td>
+        <td><input></td>
+        <td><input></td>
+        <td>
+          <button onclick="saveRow(this)">Save</button>
+          <button onclick="this.closest('tr').remove()">Cancel</button>
+        </td>
+      `;
+    }
+
+    async function saveRow(btn) {
+      const row = btn.closest('tr');
+      const inputs = row.querySelectorAll('input');
+      const city = document.getElementById('citySelect').value;
+
+      const person = {
+        name: inputs[0].value,
+        birthdate: inputs[1].value,
+        contact: inputs[2].value,
+        bloodGroup: inputs[3].value,
+        city
+      };
+
+      await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(person)
+      });
+
+      loadTable();
+    }
+
+    async function deletePerson(id) {
+      await fetch(`${API}/${id}`, { method: 'DELETE' });
+      loadTable();
+    }
+
+    // **editRow Function**
+    function editRow(btn) {
+      const row = btn.closest('tr');
+      const inputs = row.querySelectorAll('input');
+      
+      // Enable all inputs for the row
+      inputs.forEach(input => input.disabled = false);
+      
+      // Change the Edit button to Save
+      btn.innerText = 'Save';
+      btn.setAttribute('onclick', 'saveEditedRow(this)');
+    }
+
+    // **saveEditedRow Function**
+    async function saveEditedRow(btn) {
+      const row = btn.closest('tr');
+      const inputs = row.querySelectorAll('input');
+      const city = document.getElementById('citySelect').value;
+      const id = row.getAttribute('data-id');
+
+      const person = {
+        name: inputs[0].value,
+        birthdate: inputs[1].value,
+        contact: inputs[2].value,
+        bloodGroup: inputs[3].value,
+        city
+      };
+
+      // **Send PUT request to update the person**
+      await fetch(`${API}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(person)
+      });
+
+      loadTable();
+    }
+
+    loadTable();
+  </script>
+</body>
+</html>
