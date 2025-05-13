@@ -164,4 +164,11 @@ td textarea {
   gap: 6px;
 }
 
+#searchInput {
+  padding: 8px;
+  margin-bottom: 10px;
+  width: 300px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
 

@@ -144,6 +144,8 @@
   </select>
 
   <button onclick="addRow()">Add Row</button>
+  <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search by name/contact...">
+
 
   <table>
     <thead>
@@ -215,8 +217,26 @@
       `;
 
   // Enable inputs immediately
-  newRow.querySelectorAll('input, textarea').forEach(input => input.disabled = false);
-}
+    newRow.querySelectorAll('input, textarea').forEach(input => input.disabled = false);
+    }
+
+    function searchTable() {
+      const input = document.getElementById("searchInput");
+      const filter = input.value.toLowerCase();
+      const rows = document.querySelectorAll("#tableBody tr");
+
+      rows.forEach(row => {
+        const cells = row.querySelectorAll("td");
+        const name = cells[1].innerText.toLowerCase();
+        const contact = cells[3].innerText.toLowerCase();
+
+        if (name.includes(filter) || contact.includes(filter)) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    }
 
 
     function addRow() {
