@@ -175,6 +175,8 @@
       data.forEach((person, index) => {
         const row = tbody.insertRow();
         row.setAttribute('data-id', person._id);  // **Set data-id attribute to row for identification**
+
+      
         row.innerHTML = `
           <td>${index + 1}</td>
           <td><textarea disabled>${person.name || ''}</textarea></td>
@@ -186,11 +188,36 @@
               <!-- **Edit Button** -->
               <button onclick="editRow(this)">Edit</button>
               <button onclick="deletePerson('${person._id}')">Delete</button>
+              <button onclick="insertRowBelow(this)">Insert Below</button>
             </div>  
           </td>
         `;
       });
     }
+
+    function insertRowBelow(btn) {
+      const currentRow = btn.closest('tr');
+      const tbody = document.getElementById('tableBody');
+      const newRow = tbody.insertRow(currentRow.rowIndex); // insert AFTER current row
+
+      newRow.innerHTML = `
+        <td>New</td>
+        <td><textarea></textarea></td>
+        <td><input type="date"></td>
+        <td><input></td>
+        <td><input></td>
+        <td>
+          <div class="actions">
+            <button onclick="saveRow(this)">Save</button>
+            <button onclick="this.closest('tr').remove()">Cancel</button>
+          </div>
+        </td>
+      `;
+
+  // Enable inputs immediately
+  newRow.querySelectorAll('input, textarea').forEach(input => input.disabled = false);
+}
+
 
     function addRow() {
       const tbody = document.getElementById('tableBody');
@@ -208,11 +235,20 @@
           </div>  
         </td>
       `;
+
+      row.addEventListener('click', () => {
+        document.querySelectorAll('#dataTable tr').forEach(r => r.classList.remove('selected'));
+        row.classList.add('selected');
+      });
+
+  // Enable inputs
+      row.querySelectorAll('input, textarea').forEach(input => input.disabled = false);
+
     }
 
     async function saveRow(btn) {
       const row = btn.closest('tr');
-      const inputs = row.querySelectorAll('input', 'textarea');
+      const inputs = row.querySelectorAll('input, textarea');
       const city = document.getElementById('citySelect').value;
 
       const person = {
@@ -240,7 +276,7 @@
     // **editRow Function**
     function editRow(btn) {
       const row = btn.closest('tr');
-      const inputs = row.querySelectorAll('input');
+      const inputs = row.querySelectorAll('input, textarea');
       
       // Enable all inputs for the row
       inputs.forEach(input => input.disabled = false);
@@ -253,7 +289,7 @@
     // **saveEditedRow Function**
     async function saveEditedRow(btn) {
       const row = btn.closest('tr');
-      const inputs = row.querySelectorAll('input','textarea');
+      const inputs = row.querySelectorAll('input,textarea');
       const city = document.getElementById('citySelect').value;
       const id = row.getAttribute('data-id');
 
