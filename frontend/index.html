@@ -45,7 +45,8 @@
   </table>
 
   <script>
-    const API = 'https://sumra.onrender.com/people';
+    const BPI = 'https://sumra.onrender.com/people';
+    const API = 'http://localhost:3000/people';
 
     async function loadTable() {
       const city = document.getElementById('citySelect').value;
@@ -73,7 +74,6 @@
             <div class = 'actions'>
               <!-- **Edit Button** -->
               <button onclick="editRow(this)">Edit</button>
-              <button onclick="deletePerson('${person._id}')">Delete</button>
               <button onclick="insertRowBelow(this)">Insert Below</button>
             </div>  
           </td>
@@ -81,30 +81,9 @@
       });
     }
 
-    
+    /* For delete button just add this under Edit, '<button onclick="deletePerson('${person._id}')"'>Delete</button>'*/
 
-    /*function insertRowBelow(btn) {
-      const currentRow = btn.closest('tr');
-      const tbody = document.getElementById('tableBody');
-      const newRow = tbody.insertRow(currentRow.rowIndex); // insert AFTER current row
-
-      newRow.innerHTML = `
-        <td>New</td>
-        <td><textarea></textarea></td>
-        <td><input type="date"></td>
-        <td><input></td>
-        <td><input></td>
-        <td>
-          <div class="actions">
-            <button onclick="saveRow(this)">Save</button>
-            <button onclick="this.closest('tr').remove()">Cancel</button>
-          </div>
-        </td>
-      `;
-
-  // Enable inputs immediately
-      newRow.querySelectorAll('input, textarea').forEach(input => input.disabled = false);
-    }*/
+  
 
     function searchTable() {
       const input = document.getElementById("searchInput");
@@ -125,7 +104,7 @@
     }
 
 
-    function addRow() {
+    /*function addRow() {
       const tbody = document.getElementById('tableBody');
       const row = tbody.insertRow();
       row.innerHTML = `
@@ -150,7 +129,41 @@
   // Enable inputs
       row.querySelectorAll('input, textarea').forEach(input => input.disabled = false);
 
-    }
+    }*/
+
+    async function addRow() {
+  const city = document.getElementById('citySelect').value;
+
+  // Fetch the highest order value for the city
+  const res = await fetch(`${API}?city=${city}`);
+  const data = await res.json();
+  const highestOrder = data.reduce((max, person) => person.order > max ? person.order : max, 0);
+
+  // Set order to highest + 1
+  const newOrder = highestOrder + 1;
+
+  const tbody = document.getElementById('tableBody');
+  const row = tbody.insertRow();
+  row.setAttribute('data-order', newOrder);  // Set the new order for the row
+
+  row.innerHTML = `
+    <td>New</td>
+    <td><textarea></textarea></td>
+    <td><input type="date"></td>
+    <td><input></td>
+    <td><input></td>
+    <td>
+      <div class = 'actions'>
+        <button onclick="saveRow(this, ${newOrder})">Save</button>
+        <button onclick="this.closest('tr').remove()">Cancel</button>
+      </div>  
+    </td>
+  `;
+
+  // Enable inputs
+  row.querySelectorAll('input, textarea').forEach(input => input.disabled = false);
+}
+
 
     async function saveRow(btn,order) {
        console.log("saveRow called with order:", order); 
@@ -229,32 +242,7 @@ console.log("About to POST person:", person);
     }
 
 
-    /*function insertRowBelow(btn) {
-  const currentRow = btn.closest('tr');
-  const tbody = document.getElementById('tableBody');
-  const newRow = tbody.insertRow(currentRow.rowIndex + 0); // insert AFTER current row
-
-  // Calculate the order value
-  const order = currentRow.rowIndex + 1;
-
-  newRow.innerHTML = `
-    <td>New</td>
-    <td><textarea></textarea></td>
-    <td><input type="date"></td>
-    <td><input></td>
-    <td><input></td>
-    <td>
-      <div class="actions">
-        <button onclick="saveRow(this, ${order})">Save</button>
-        <button onclick="this.closest('tr').remove()">Cancel</button>
-      </div>
-    </td>
-  `;
-
-  // Enable inputs
-  newRow.querySelectorAll('input, textarea').forEach(input => input.disabled = false);
-}*/
-
+  
 async function insertRowBelow(btn) {
   const currentRow = btn.closest('tr');
   const currentOrder = Number(currentRow.getAttribute('data-order'));
