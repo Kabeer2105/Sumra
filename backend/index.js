@@ -69,6 +69,16 @@ mongoose.connect('mongodb+srv://kabeerd:Ashifa2505@cluster0.yke9w5x.mongodb.net/
 
 app.use(cors());
 app.use(express.json());
+app.use(cors());
+app.use(express.json());
+
+// Catch-all request logger
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path}`);
+  next();
+});
+
+
 
 // Serve static files from the frontend folder
 app.use(express.static(path.join(__dirname, '../frontend')));
@@ -84,7 +94,8 @@ const personSchema = new mongoose.Schema({
   birthdate: String,
   contact: String,
   bloodGroup: String,
-  city: String
+  city: String,
+  order: Number
 });
 
 const Person = mongoose.model('Person', personSchema);
@@ -93,12 +104,16 @@ app.get('/people', async (req, res) => {
   const city = req.query.city;
   if (!city) return res.status(400).json({ error: 'City is required' });
 
-  const people = await Person.find({ city });
+  /*const people = await Person.find({ city });*/
+  const people = await Person.find({ city }).sort({ order: 1 }); // sorted by order
   res.json(people);
 });
 
 app.post('/people', async (req, res) => {
   const data = req.body;
+
+console.log('Final data before save:', data);
+
   const person = new Person(data);
   await person.save();
   res.json({ message: 'Saved' });
@@ -110,7 +125,7 @@ app.delete('/people/:id', async (req, res) => {
 });
 
 // **Added PUT route for updating person**
-app.put('/people/:id', async (req, res) => {
+/*app.put('/people/:id', async (req, res) => {
   const personId = req.params.id;
   const updatedData = req.body;
   
@@ -119,7 +134,20 @@ app.put('/people/:id', async (req, res) => {
   if (!person) return res.status(404).json({ error: 'Person not found' });
   
   res.json(person);
+});*/
+
+// Shift orders starting from a given order by +1
+app.put('/shift-orders', async (req, res) => {
+  const { city, startingOrder } = req.body;
+
+  await Person.updateMany(
+    { city, order: { $gte: startingOrder } },
+    { $inc: { order: 1 } }
+  );
+
+  res.json({ message: 'Orders shifted' });
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
