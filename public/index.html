@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0E5A73">
+  <title>Sumra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/family.css">
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <div class="top-row">
+        <h1><a href="#/">Sumra</a></h1>
+        <nav class="main-nav" aria-label="Main">
+          <a href="#/" data-nav="directory">Directory</a>
+          <a href="#/family" data-nav="family">Family</a>
+          <a href="#/review" data-nav="review">Review <span class="nav-count" id="reviewCount"></span></a>
+          <a href="#/missing" data-nav="missing">Missing details</a>
+        </nav>
+      </div>
+      <nav class="cities" id="cities" aria-label="City"></nav>
+    </div>
+  </header>
+
+  <main class="page" id="directoryView">
+    <section class="birthdays" id="birthdays" hidden aria-labelledby="birthdaysTitle">
+      <h2 id="birthdaysTitle">Birthdays in the next 30 days</h2>
+      <ul id="birthdayList"></ul>
+    </section>
+
+    <div class="toolbar">
+      <label class="search">
+        <span class="visually-hidden">Search by name</span>
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input type="search" id="searchInput" placeholder="Search by name" autocomplete="off">
+      </label>
+      <button id="addRowBtn" type="button" class="btn primary">Add person</button>
+    </div>
+
+    <div class="blood-filter">
+      <div class="chips" id="bloodChips" role="group" aria-label="Filter by blood group"></div>
+      <label class="compat" id="compatLabel" hidden>
+        <input type="checkbox" id="compatToggle"> Also show compatible donors
+      </label>
+    </div>
+
+    <p id="status" class="status" role="status"></p>
+
+    <div class="list-head" aria-hidden="true">
+      <span>#</span><span>Name</span><span>Born</span><span>Contact</span><span>Blood</span><span></span>
+    </div>
+    <ol id="list" class="people"></ol>
+  </main>
+
+  <main class="page" id="familyView" hidden></main>
+
+  <dialog id="picker" class="picker">
+    <form method="dialog" class="picker-inner">
+      <h2 id="pickerTitle">Choose a person</h2>
+      <label class="search">
+        <span class="visually-hidden">Search by name</span>
+        <input type="search" id="pickerSearch" placeholder="Type a name" autocomplete="off">
+      </label>
+      <ul id="pickerResults" class="picker-results"></ul>
+      <div class="picker-actions">
+        <button type="button" class="btn" id="pickerAddAncestor" hidden></button>
+        <button value="cancel" class="btn">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="cityDialog" class="picker">
+    <form id="cityForm" class="picker-inner">
+      <h2>Add a city</h2>
+      <label class="field-block">City name
+        <input id="cityName" autocomplete="off" maxlength="40" placeholder="e.g. Mtwara">
+      </label>
+      <p id="cityError" class="status error" role="alert"></p>
+      <div class="picker-actions">
+        <button type="button" class="btn" onclick="document.getElementById('cityDialog').close()">Cancel</button>
+        <button type="submit" class="btn primary">Add city</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="/app.js"></script>
+  <script src="/family.js"></script>
+</body>
+</html>
